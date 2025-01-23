@@ -17,9 +17,10 @@ A toolkit for converting between different speech dataset formats.
 
 ## Supported Format Conversions
 
-| From \ To                                 | [VCTK](docs/vctk_format.md) |
-| ----------------------------------------- | --------------------------- |
-| [CommonVoice](docs/commonvoice_format.md) | ✓                           |
+| From \ To                                 | [VCTK](docs/vctk_format.md) | [CommonVoice](docs/commonvoice_format.md) |
+| ----------------------------------------- | --------------------------- | ----------------------------------------- |
+| [VCTK](docs/vctk_format.md)               | -                           |                                           |
+| [CommonVoice](docs/commonvoice_format.md) | ✓                           | -                                         |
 
 ## Features
 
