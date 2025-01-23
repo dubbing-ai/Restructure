@@ -15,15 +15,11 @@ A toolkit for converting between different speech dataset formats.
 └── README.md               # Project README
 ```
 
-## Currently Supported Formats
+## Supported Format Conversions
 
-### Input Formats
-
-- Mozilla CommonVoice
-
-### Output Formats
-
-- VCTK
+| From \ To                                 | [VCTK](docs/vctk_format.md) |
+| ----------------------------------------- | --------------------------- |
+| [CommonVoice](docs/commonvoice_format.md) | ✓                           |
 
 ## Features
 
