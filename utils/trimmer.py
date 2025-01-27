@@ -5,6 +5,7 @@ from pydub import AudioSegment
 from pydub.silence import detect_leading_silence
 import argparse
 from tqdm import tqdm
+import shutil
 
 def trim_silence(audio):
     """
@@ -67,6 +68,11 @@ def process_directory(input_dir):
     
     # Create output directory name by appending '_silence_trimmed'
     output_base = input_path.parent / f"{input_path.name}_silence_trimmed"
+    
+    # Clean output directory if it exists
+    if output_base.exists():
+        print("Clearing existing output directory...")
+        shutil.rmtree(output_base)
     
     # Supported audio formats
     audio_extensions = {'.mp3', '.wav', '.ogg', '.flac', '.m4a', '.wma'}
