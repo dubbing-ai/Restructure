@@ -6,6 +6,8 @@ from pydub.silence import detect_leading_silence
 import argparse
 from tqdm import tqdm
 import shutil
+from concurrent.futures import ThreadPoolExecutor, as_completed
+import multiprocessing
 
 def trim_silence(audio):
     """
@@ -27,16 +29,16 @@ def trim_silence(audio):
     trimmed_audio = audio[start_trim:duration-end_trim]
     return trimmed_audio
 
-def process_audio_file(input_path, output_path):
+def process_audio_file(args):
     """
     Process a single audio file by trimming silence and saving as WAV.
     
     Args:
-        input_path (Path): Path to input audio file
-        output_path (Path): Path to save processed audio file
+        args (tuple): Tuple containing (input_path, output_path)
     Returns:
         bool: True if processing was successful, False otherwise
     """
+    input_path, output_path = args
     try:
         # Load audio file (pydub can handle various formats)
         audio = AudioSegment.from_file(str(input_path))
@@ -55,12 +57,13 @@ def process_audio_file(input_path, output_path):
         tqdm.write(f"Error processing {input_path}: {str(e)}")
         return False
 
-def process_directory(input_dir):
+def process_directory(input_dir, num_threads=None):
     """
-    Process all audio files in a directory recursively.
+    Process all audio files in a directory recursively using multiple threads.
     
     Args:
         input_dir (str): Path to input directory
+        num_threads (int, optional): Number of threads to use. Defaults to CPU count.
     """
     input_path = Path(input_dir)
     if not input_path.exists():
@@ -80,30 +83,48 @@ def process_directory(input_dir):
     # First, collect all audio files
     audio_files = [f for f in input_path.rglob('*') if f.suffix.lower() in audio_extensions]
     
+    # Prepare work items
+    work_items = []
+    for audio_file in audio_files:
+        rel_path = audio_file.relative_to(input_path)
+        output_path = output_base / rel_path.with_suffix('.wav')
+        work_items.append((audio_file, output_path))
+    
     # Initialize counters
     successful = 0
     failed = 0
     
-    # Process all audio files with progress bar
-    for audio_file in tqdm(audio_files, desc="Processing audio files", unit="file"):
-        # Create corresponding output path
-        rel_path = audio_file.relative_to(input_path)
-        output_path = output_base / rel_path.with_suffix('.wav')
+    # Use CPU count if num_threads not specified
+    if num_threads is None:
+        num_threads = multiprocessing.cpu_count()
+    
+    # Process files using thread pool
+    with ThreadPoolExecutor(max_workers=num_threads) as executor:
+        # Submit all tasks
+        future_to_file = {
+            executor.submit(process_audio_file, item): item[0] 
+            for item in work_items
+        }
         
-        if process_audio_file(audio_file, output_path):
-            successful += 1
-        else:
-            failed += 1
+        # Process results with progress bar
+        with tqdm(total=len(work_items), desc=f"Processing files ({num_threads} threads)", unit="file") as pbar:
+            for future in as_completed(future_to_file):
+                if future.result():
+                    successful += 1
+                else:
+                    failed += 1
+                pbar.update(1)
     
     return successful, failed
 
 def main():
     parser = argparse.ArgumentParser(description='Trim silence from audio files in a directory.')
     parser.add_argument('input_dir', help='Input directory containing audio files')
+    parser.add_argument('--threads', type=int, help='Number of threads to use (default: CPU count)')
     args = parser.parse_args()
     
     try:
-        successful, failed = process_directory(args.input_dir)
+        successful, failed = process_directory(args.input_dir, args.threads)
         tqdm.write(f"\nProcessing completed!")
         tqdm.write(f"Successfully processed: {successful} files")
         if failed > 0:
