@@ -4,17 +4,18 @@
 
 ```plaintext
 VCTK-Corpus-[version]/
-├── txt/                  # Text transcriptions
-│   ├── p225/             # Speaker-specific transcripts
+├── txt/                        # Text transcriptions
+│   ├── p225/                   # Speaker-specific transcripts
 │   │   ├── p225_001.txt
 │   │   └── ...
 │   └── p226/
-├── wav[XX]/              # Audio files at different sampling rates (16/32/48 kHz)
-│   ├── p225/             # Speaker-specific recordings
-│   │   ├── p225_001.wav
+├── wav[XX]/                    # Audio files at different sampling rates (16/32/48 kHz)
+│   ├── p225/                   # Speaker-specific recordings
+│   │   ├── p225_001_mic1.flac  # Recordings from microphone 1
+│   │   ├── p225_001_mic2.flac  # Recordings from microphone 2
 │   │   └── ...
 │   └── p226/
-└── speaker-info.txt      # Speaker metadata
+└── speaker-info.txt            # Speaker metadata
 ```
 
 ## File Formats
