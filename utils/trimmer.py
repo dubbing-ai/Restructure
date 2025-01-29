@@ -31,14 +31,14 @@ def trim_silence(audio):
 
 def process_audio_file(args):
     """
-    Process a single audio file by trimming silence and saving as WAV.
+    Process a single audio file by trimming silence and saving in specified format.
     
     Args:
-        args (tuple): Tuple containing (input_path, output_path)
+        args (tuple): Tuple containing (input_path, output_path, output_format)
     Returns:
         bool: True if processing was successful, False otherwise
     """
-    input_path, output_path = args
+    input_path, output_path, output_format = args
     try:
         # Load audio file (pydub can handle various formats)
         audio = AudioSegment.from_file(str(input_path))
@@ -49,20 +49,21 @@ def process_audio_file(args):
         # Create output directory if it doesn't exist
         output_path.parent.mkdir(parents=True, exist_ok=True)
         
-        # Export as WAV
-        trimmed_audio.export(str(output_path), format='wav')
+        # Export in specified format
+        trimmed_audio.export(str(output_path), format=output_format)
         return True
         
     except Exception as e:
         tqdm.write(f"Error processing {input_path}: {str(e)}")
         return False
 
-def process_directory(input_dir, num_threads=None):
+def process_directory(input_dir, output_format='wav', num_threads=None):
     """
     Process all audio files in a directory recursively using multiple threads.
     
     Args:
         input_dir (str): Path to input directory
+        output_format (str): Output audio format ('wav' or 'flac')
         num_threads (int, optional): Number of threads to use. Defaults to CPU count.
     """
     input_path = Path(input_dir)
@@ -87,8 +88,8 @@ def process_directory(input_dir, num_threads=None):
     work_items = []
     for audio_file in audio_files:
         rel_path = audio_file.relative_to(input_path)
-        output_path = output_base / rel_path.with_suffix('.wav')
-        work_items.append((audio_file, output_path))
+        output_path = output_base / rel_path.with_suffix(f'.{output_format}')
+        work_items.append((audio_file, output_path, output_format))
     
     # Initialize counters
     successful = 0
@@ -120,11 +121,13 @@ def process_directory(input_dir, num_threads=None):
 def main():
     parser = argparse.ArgumentParser(description='Trim silence from audio files in a directory.')
     parser.add_argument('input_dir', help='Input directory containing audio files')
+    parser.add_argument('--format', choices=['wav', 'flac'], default='wav',
+                      help='Output audio format (default: wav)')
     parser.add_argument('--threads', type=int, help='Number of threads to use (default: CPU count)')
     args = parser.parse_args()
     
     try:
-        successful, failed = process_directory(args.input_dir, args.threads)
+        successful, failed = process_directory(args.input_dir, args.format, args.threads)
         tqdm.write(f"\nProcessing completed!")
         tqdm.write(f"Successfully processed: {successful} files")
         if failed > 0:
