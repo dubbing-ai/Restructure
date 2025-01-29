@@ -9,7 +9,7 @@ VCTK-Corpus-[version]/
 │   │   ├── p225_001.txt
 │   │   └── ...
 │   └── p226/
-├── wav48/                # 48kHz audio files
+├── wav[XX]/              # Audio files at different sampling rates (16/32/48 kHz)
 │   ├── p225/             # Speaker-specific recordings
 │   │   ├── p225_001.wav
 │   │   └── ...
