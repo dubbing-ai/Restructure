@@ -37,6 +37,7 @@ A toolkit for converting between different speech dataset formats and processing
 - tqdm
 - pydub
 - shutil
+- TTS
 
 ## Usage
 
