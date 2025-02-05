@@ -19,10 +19,13 @@ A toolkit for converting between different speech dataset formats and processing
 
 ## Supported Format Conversions
 
-| From \ To                                 | [VCTK](docs/vctk_format.md) | [CommonVoice](docs/commonvoice_format.md) |
-| ----------------------------------------- | --------------------------- | ----------------------------------------- |
-| [VCTK](docs/vctk_format.md)               | -                           |                                           |
-| [CommonVoice](docs/commonvoice_format.md) | ✓                           | -                                         |
+| From \ To                                 | [VCTK](docs/VCTK_format.md) | [CommonVoice](docs/CommonVoice_format.md) | [TSync2](docs/TSync2_format.md) | [GigaSpeech](docs/GigaSpeech_format.md) |
+| ----------------------------------------- | --------------------------- | ----------------------------------------- | ------------------------------ | -------------------------------------- |
+| [VCTK](docs/vctk_format.md)               | -                           |                                           |                                |                                      |
+| [CommonVoice](docs/CommonVoice_format.md) | ✓                           | -                                         |                                |                                      |
+| [TSync2](docs/TSync2_format.md)           | ✓                           |                                           | -                              | ✓                                    |
+| [GigaSpeech](docs/GigaSpeech_format.md)   |                             |                                           |                                | -                                    |
+
 
 ## Features
 
