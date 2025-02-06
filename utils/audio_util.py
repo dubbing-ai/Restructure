@@ -39,6 +39,41 @@ def convert_wav_to_flac(src_path: str, dst_path: str) -> bool:
         return False
     return True
 
+def convert_mp3_to_flac(src_path: str, dst_path: str) -> bool:
+    """
+    Convert MP3 file to FLAC format using pydub
+    
+    Args:
+        src_path: Source MP3 file path
+        dst_path: Destination FLAC file path
+    
+    Returns:
+        bool: True if conversion successful, False otherwise
+
+    Example:
+        success = convert_mp3_to_flac("input.mp3", "output.flac")
+    """
+    try:
+        # Load MP3 file
+        audio = AudioSegment.from_mp3(src_path)
+        
+        # Export as FLAC
+        # Set parameters for high quality audio
+        audio.export(
+            dst_path,
+            format="flac",
+            parameters=[
+                "-ac", "1",  # mono audio
+                "-ar", "32000",  # 32kHz sample rate
+                "-compression_level", "8"  # highest compression
+            ]
+        )
+    except Exception as e:
+        print(f"Error converting {src_path}: {str(e)}")
+        return False
+    return True
+
+
 def resample_audios(input_folders: str, file_ext: str, sample_rate: float = 16000, n_jobs: int = 4):
     """
     Resample audio files to specified sample rate.
