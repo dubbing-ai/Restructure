@@ -13,6 +13,7 @@ A toolkit for converting between different speech dataset formats and processing
 │   ├── commonvoice-to-vctk       # Convert CommonVoice to VCTK format
 │   ├── TSync2-to-gigaspeech      # Convert TSync2 to GigaSpeech format
 │   └── TSync2-to-vctk            # Convert TSync2 to VCTK format
+│   └── TSync2-to-vctk-ph         # Convert TSync2 to VCTK format with phonemes as text
 ├── data/
 │   ├── converted/                # Output directory for converted datasets
 │   └── raw/                      # Input directory for original datasets
@@ -74,6 +75,7 @@ Convert between the following formats:
 = python-dotenv
 - huggingface_hub
 - ffmpeg-normalize
+- [transliterate](https://github.com/dubbing-ai/Transliterate.git)
 
 ### External Tools
 
