@@ -6,34 +6,61 @@ A toolkit for converting between different speech dataset formats and processing
 
 ```plaintext
 .
-├── analysis/               # Dataset analysis notebooks
-├── converter/              # Format conversion scripts
+├── analysis/                     # Dataset analysis notebooks
+│   ├── commonvoice-analysis      # Thai CommonVoice statistics 
+│   └── Tsync2-analysis           # TSync2 dataset analysis
+├── converter/                    # Format conversion scripts
+│   ├── commonvoice-to-vctk       # Convert CommonVoice to VCTK format
+│   ├── TSync2-to-gigaspeech      # Convert TSync2 to GigaSpeech format
+│   └── TSync2-to-vctk            # Convert TSync2 to VCTK format
 ├── data/
-│   ├── converted/          # Output directory for converted datasets
-│   └── raw/                # Input directory for original datasets
-├── docs/                   # Dataset format documentation
-├── utils/                  # Utility scripts
-│   └── trimmer.py          # Audio silence trimming utility
-└── README.md               # Project README
+│   ├── converted/                # Output directory for converted datasets
+│   └── raw/                      # Input directory for original datasets
+├── docs/                         # Dataset format documentation
+│   ├── commonvoice_format.md
+│   ├── GigaSpeech_format.md
+│   ├── TSync2_format.md
+│   └── vctk_format.md
+└── utils/                        # Utility scripts
+    ├── audio_util.py             # Audio processing utilities
+    └── file_util.py              # File handling utilities
 ```
 
 ## Supported Format Conversions
 
 | From \ To                                 | [VCTK](docs/VCTK_format.md) | [CommonVoice](docs/CommonVoice_format.md) | [TSync2](docs/TSync2_format.md) | [GigaSpeech](docs/GigaSpeech_format.md) |
-| ----------------------------------------- | --------------------------- | ----------------------------------------- | ------------------------------ | -------------------------------------- |
-| [VCTK](docs/vctk_format.md)               | -                           |                                           |                                |                                      |
-| [CommonVoice](docs/CommonVoice_format.md) | ✓                           | -                                         |                                |                                      |
-| [TSync2](docs/TSync2_format.md)           | ✓                           |                                           | -                              | ✓                                    |
-| [GigaSpeech](docs/GigaSpeech_format.md)   |                             |                                           |                                | -                                    |
-
+| ----------------------------------------- | --------------------------- | ----------------------------------------- | ------------------------------- | --------------------------------------- |
+| [VCTK](docs/vctk_format.md)               | -                           |                                           |                                 |                                         |
+| [CommonVoice](docs/CommonVoice_format.md) | ✓                           | -                                         |                                 |                                         |
+| [TSync2](docs/TSync2_format.md)           | ✓                           |                                           | -                               | ✓                                       |
+| [GigaSpeech](docs/GigaSpeech_format.md)   |                             |                                           |                                 | -                                       |
 
 ## Features
 
-- Conversion between supported dataset formats
-- Dataset statistics and analysis tools
-- Audio processing utilities including silence trimming
+### Audio Processing
 
-## Requirements
+- Audio format conversion (WAV/MP3 to FLAC)
+- Resampling to different sample rates
+- Silence trimming using Voice Activity Detection (VAD)
+- Volume normalization
+- Multi-threaded processing support
+
+### Dataset Conversion
+
+Convert between the following formats:
+
+- CommonVoice → VCTK
+- TSync2 → VCTK
+- TSync2 → GigaSpeech
+
+### Analysis Tools
+
+- Audio duration statistics
+- Speaker distribution analysis
+- Text analysis and character set extraction
+- Quality assessment utilities
+
+### Python Dependencies
 
 - Python 3.9+
 - pandas
@@ -41,6 +68,16 @@ A toolkit for converting between different speech dataset formats and processing
 - pydub
 - shutil
 - TTS
+- torch
+- datasets
+- soundfile
+= python-dotenv
+- huggingface_hub
+- ffmpeg-normalize
+
+### External Tools
+
+- ffmpeg (for audio processing)
 
 ## Usage
 
@@ -50,28 +87,6 @@ A toolkit for converting between different speech dataset formats and processing
 2. Run analysis notebook to examine dataset statistics
 3. Execute conversion script for desired format
 4. Access converted dataset in `data/converted/`
-
-### Audio Silence Trimming
-
-The `trimmer.py` utility removes silence from the beginning and end of audio files:
-
-```bash
-python utils/trimmer.py /path/to/audio/folder
-```
-
-Features:
-
-- Recursively processes all audio files in the input directory
-- Supports multiple audio formats (MP3, WAV, OGG, FLAC, M4A, WMA)
-- Preserves directory structure in output
-- Shows progress bar and processing statistics
-- Outputs trimmed files in WAV format
-
-Output will be created in a new directory with '_silence_trimmed' suffix:
-
-```plaintext
-input_folder/ → input_folder_silence_trimmed/
-```
 
 ## Contributing
 
