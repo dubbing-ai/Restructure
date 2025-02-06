@@ -12,7 +12,7 @@ A toolkit for converting between different speech dataset formats and processing
 ├── converter/                    # Format conversion scripts
 │   ├── commonvoice-to-vctk       # Convert CommonVoice to VCTK format
 │   ├── TSync2-to-gigaspeech      # Convert TSync2 to GigaSpeech format
-│   └── TSync2-to-vctk            # Convert TSync2 to VCTK format
+│   ├── TSync2-to-vctk            # Convert TSync2 to VCTK format
 │   └── TSync2-to-vctk-ph         # Convert TSync2 to VCTK format with phonemes as text
 ├── data/
 │   ├── converted/                # Output directory for converted datasets
