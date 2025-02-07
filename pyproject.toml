@@ -1,0 +1,41 @@
+[project]
+name = "speech-dataset-converter"
+version = "0.1.0"
+description = "A toolkit for converting between different speech dataset formats and processing audio files"
+authors = [
+    {name = "Thanat Wongsamut", email = "thanat.wongsamut@gmail.com"},
+    {name = "Punyaphat Surakiatkamjorn", email = "punyaphat.sura@gmail.com"},
+    {name = "Korawut Sirianuntapat", email = "korawut_s@outlook.com"},
+    {name = "Natyanin Chayanuwong"},
+    {name = "Thanakorn Suthamkasem"}
+]
+license = {text = "MIT"}
+readme = "README.md"
+package-mode = false
+requires-python = ">=3.11,<3.12"
+dependencies = [
+    "tts (>=0.22.0,<0.23.0)",
+    "torch (>=2.6.0,<3.0.0)",
+    "tqdm (>=4.67.1,<5.0.0)",
+    "pydub (>=0.25.1,<0.26.0)",
+    "datasets (>=3.2.0,<4.0.0)",
+    "soundfile (>=0.13.1,<0.14.0)",
+    "python-dotenv (>=1.0.1,<2.0.0)",
+    "huggingface-hub (>=0.28.1,<0.29.0)",
+    "ffmpeg-normalize (>=1.31.0,<2.0.0)",
+    "transliterate @ git+https://github.com/dubbing-ai/Transliterate.git",
+    "ffmpeg (>=1.4,<2.0)"
+]
+
+[tool.poetry]
+package-mode = false
+
+[tool.poetry.group.dev.dependencies]
+pytest = "^8.3.4"
+black = "^25.1.0"
+isort = "^6.0.0"
+jupyter = "^1.1.1"
+
+[build-system]
+requires = ["poetry-core>=2.0.0,<3.0.0"]
+build-backend = "poetry.core.masonry.api"
