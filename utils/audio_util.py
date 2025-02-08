@@ -2,6 +2,7 @@ from pathlib import Path
 from tqdm import tqdm
 import torch
 from pydub import AudioSegment
+import subprocess
 
 from TTS.bin.resample import resample_files
 from TTS.utils.vad import get_vad_model_and_utils, remove_silence
@@ -73,6 +74,31 @@ def convert_mp3_to_flac(src_path: str, dst_path: str) -> bool:
         return False
     return True
 
+def convert_mp3_to_wav(src_path: str, dst_path: str) -> bool:
+    """
+    Convert MP3 file to WAV format using pydub
+    
+    Args:
+        src_path: Source MP3 file path
+        dst_path: Destination WAV file path
+    
+    Returns:
+        bool: True if conversion successful, False otherwise
+
+    Example:
+        success = convert_mp3_to_wav("input.mp3", "output.wav")
+    """
+    try:
+        subprocess.run(
+            ["ffmpeg", "-i", src_path, "-ac", "1", "-ar", "32000", dst_path, "-y"],
+            check=True,
+            stdout=subprocess.DEVNULL,
+            stderr=subprocess.DEVNULL
+        )
+        return True
+    except subprocess.CalledProcessError as e:
+        print(f"Error converting {src_path}: {e}")
+        return False
 
 def resample_audios(input_folders: str, file_ext: str, sample_rate: float = 16000, n_jobs: int = 4):
     """
