@@ -3,6 +3,7 @@ from tqdm import tqdm
 import torch
 from pydub import AudioSegment
 import subprocess
+import numpy as np
 
 from TTS.bin.resample import resample_files
 from TTS.utils.vad import get_vad_model_and_utils, remove_silence
@@ -177,3 +178,55 @@ def trim_silence_with_vad(input_folder: str, file_extension: str, model_and_util
             for file in no_speech_files:
                 f.write(f"{file}\n")
         print(f"\nFound {len(no_speech_files)} files with no speech. List saved to {log_path}")
+
+def normalize_audio_files(input_dir, extensions="flac,wav", target_db=-27, sample_rate=16000):
+    """
+    Normalize audio files using ffmpeg-normalize with RMS normalization.
+    Supports both FLAC and WAV formats.
+    
+    Args:
+        input_dir (str): Path to input directory
+        extensions (str): Comma-separated extensions (e.g., "flac,wav")
+        target_db (float): Target RMS level in dB
+        sample_rate (int): Output sample rate in Hz
+    """
+    input_dir = Path(input_dir)
+    
+    # Process extensions string
+    extensions_list = [f".{ext.strip().lstrip('.')}" for ext in extensions.split(',')]
+    
+    # Find all audio files
+    audio_files = []
+    for ext in extensions_list:
+        audio_files.extend(list(input_dir.rglob(f"*{ext}")))
+    
+    for audio_file in tqdm(audio_files, desc="Normalizing audio files"):
+        try:
+            # Determine codec based on extension
+            output_ext = audio_file.suffix.lower()
+            codec = "flac" if output_ext == ".flac" else "pcm_s16le"
+            
+            cmd = [
+                "ffmpeg-normalize",
+                str(audio_file),
+                "-nt", "rms",            # RMS normalization
+                "-t", str(target_db),    # Target RMS level
+                "-o", str(audio_file),   # Output to same file
+                "-ar", str(sample_rate), # Set sample rate
+                "-f",                    # Force overwrite
+                "-ext", output_ext.lstrip('.'),  # Keep original extension
+                "-c:a", codec,          # Codec based on format
+                "--progress"             # Show progress
+            ]
+            
+            # Run ffmpeg-normalize
+            subprocess.run(
+                cmd,
+                check=True,
+                stdout=subprocess.DEVNULL,
+                stderr=subprocess.DEVNULL
+            )
+            
+        except subprocess.CalledProcessError as e:
+            print(f"Error processing {audio_file}: {e}")
+            continue
