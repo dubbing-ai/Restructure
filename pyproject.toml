@@ -25,6 +25,7 @@ dependencies = [
     "ffmpeg-normalize (>=1.31.0,<2.0.0)",
     "transliterate @ git+https://github.com/dubbing-ai/Transliterate.git",
     "ffmpeg (>=1.4,<2.0)",
+    "speechbrain (>=1.0.3,<2.0.0)",
     "jiwer (>=3.1.0,<4.0.0)"
 ]
 

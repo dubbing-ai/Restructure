@@ -1,8 +1,10 @@
 cv-corpus-20.0-2024-12-06
+cv-corpus-20.0-2024-12-06-th
 VCTK-Corpus-0.92
 TSync2
+LJSpeech-1.1
 gigaspeech
 thai-central
+
 *.tar.gz
-cv-corpus-20.0-2024-12-06-th
-thai-central
+*.tar.bz2
