@@ -4,6 +4,7 @@ VCTK-Corpus-0.92
 TSync2
 LJSpeech-1.1
 gigaspeech
+thai-central
 
 *.tar.gz
 *.tar.bz2
