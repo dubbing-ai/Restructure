@@ -35,6 +35,7 @@ A toolkit for converting between different speech dataset formats and processing
 | [CommonVoice](docs/CommonVoice_format.md) | ✓                           | -                                         |                                 | ✓                                       |
 | [TSync2](docs/TSync2_format.md)           | ✓                           |                                           | -                               | ✓                                       |
 | [GigaSpeech](docs/GigaSpeech_format.md)   |                             |                                           |                                 | -                                       |
+| [LJSpeech](docs/LJSpeech_format.md)       | ✓                           |                                           |                                 |                                         |
 
 ## Features
 
@@ -52,6 +53,7 @@ Convert between the following formats:
 
 - CommonVoice → VCTK
 - TSync2 → VCTK
+- LJSpeech → VCTK
 - TSync2 → GigaSpeech
 
 ### Analysis Tools
